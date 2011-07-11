@@ -133,6 +133,7 @@ public final class Launcher extends Activity
     protected static final int LAUNCHER_STYLE_STOCK = 0;
     protected static final int LAUNCHER_STYLE_EVERVOLV = 1;
     protected static final int LAUNCHER_STYLE_TABLET = 2;
+    protected static final int LAUNCHER_STYLE_FROYO = 3;
     
     static final String EXTRA_SHORTCUT_DUPLICATE = "duplicate";
 
@@ -295,6 +296,10 @@ public final class Launcher extends Activity
 	        	setContentView(R.layout.launcher_tab);
 	        	NUM_HOTSEATS = 4;
 	        	break;
+	        case LAUNCHER_STYLE_FROYO:
+	        	setContentView(R.layout.launcher);
+	        	NUM_HOTSEATS = 2;
+	            break;
         }
         
         loadHotseats();

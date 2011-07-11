@@ -19,14 +19,20 @@
 package com.evervolv.creo;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.GestureDetector.OnDoubleTapListener;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -34,129 +40,104 @@ import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import com.evervolv.creo.R;
 
-public class LauncherStylePreference extends Activity implements OnClickListener {
+public class LauncherStylePreference extends Activity implements OnDoubleTapListener, OnGestureListener, OnClickListener {
 
     private static final String TAG = "LauncherStylePreference";
     public static final String LAUNCHER_STYLE = "pref_key_launcher_style";
     
     private Gallery mGallery;
-    private TextView mStyleNameView;
-    private TextView mCurrentPositionView;
 	private Button applyButton;
     
-    private int mCurrStylePosition;
     private SharedPreferences mSharedPrefs;
-    
-    private ImageAdapter mAdapter;
+	private GestureDetector gesturedetector = null;
+	private ProgressDialog mProgressDialog;
     
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        mAdapter = new ImageAdapter(this);
+        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         inflateActivity();
-        
-        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mCurrStylePosition = Integer.valueOf(mSharedPrefs.getString(LauncherPreferences.LAUNCHER_STYLE, "1"));
-        
-        mGallery.setSelection(mCurrStylePosition);
     }
 
     private void inflateActivity() {
-        setContentView(R.layout.style_chooser);
+        setContentView(R.layout.styles_main);
+        
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Please wait...");
 
-        mCurrentPositionView = (TextView)findViewById(R.id.adapter_position);
-        mStyleNameView = (TextView)findViewById(R.id.theme_name);
-
-        mGallery = (Gallery)findViewById(R.id.gallery);
-        mGallery.setAdapter(mAdapter);
-        mGallery.setOnItemSelectedListener(mItemSelected);
+        gesturedetector = new GestureDetector(this, this);
+        gesturedetector.setOnDoubleTapListener(this);
+        
+        mGallery = (Gallery) findViewById(R.id.gallery);
+        mGallery.setAdapter(new StylesAdapter(this));
+        mGallery.setSelection(Integer.valueOf(mSharedPrefs.getString(LauncherPreferences.LAUNCHER_STYLE, "1")));
+        mGallery.setOnItemLongClickListener(new OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				savePreference();
+				return true;
+			}
+        });
 
         applyButton = (Button)findViewById(R.id.apply);
         applyButton.setOnClickListener(this);
     }
 	
-    public class ImageAdapter extends BaseAdapter {
-    	
-        private Context myContext;
-
-
-        private int[] myImageIds = {
-        		R.drawable.style_0,
-        		R.drawable.style_1
-        };
-
-        public ImageAdapter(Context c) {
-        	this.myContext = c;
-        }
-
-        public int getCount() {
-        	return this.myImageIds.length;
-        }
-
-        public Object getItem(int position) { 
-        	return position; 
-        }
-        
-        public long getItemId(int position) {
-        	return position;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView i = new ImageView(this.myContext);
-
-            i.setImageResource(this.myImageIds[position]);
-            i.setScaleType(ImageView.ScaleType.FIT_XY);
-            i.setLayoutParams(new Gallery.LayoutParams(280, 540));
-            
-            return i;
-        }
-
-        public float getScale(boolean focused, int offset) {
-            return Math.max(0, 1.0f / (float)Math.pow(2, Math.abs(offset)));
-        }
+    private void savePreference() {
+        mSharedPrefs.edit().putString(LauncherPreferences.LAUNCHER_STYLE , 
+        		Integer.toString(mGallery.getSelectedItemPosition())).commit();
+        mProgressDialog.show();
+        new Handler().postDelayed(
+        		new Runnable() {
+        			@Override public void run() {
+        				mProgressDialog.dismiss();
+        				LauncherStylePreference.this.finish();
+        				}
+        			}, 550);
+        /*
+         * Generally, 100 to 200ms is the threshold beyond which users will perceive lag in an application.
+         */
     }
-    
-    private final OnItemSelectedListener mItemSelected = new OnItemSelectedListener() {
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            mCurrentPositionView.setText(getString(R.string.item_count,
-                    (position + 1), mAdapter.getCount()));
-           
-            String text = "text";
-            Log.d(TAG, "position: " + position);
-            if (position == 0) {
-        		text = getString(R.string.style_gingerbread);
-            } else if (position == 1) {
-        		text = getString(R.string.style_evervolv);
-            }
-            if (mCurrStylePosition == position) {
-               text += " (current)";
-            }
-            mStyleNameView.setText(text);
-        }
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        	
-        }
-    };
 
 	@Override
 	public void onClick(View v) {
 		
-		SharedPreferences.Editor editor = mSharedPrefs.edit();
-		
 		if (v == applyButton) {
-			editor.putString(LAUNCHER_STYLE, Integer.toString(mGallery.getSelectedItemPosition()));
-			editor.commit();
-			finish();
-			
+			savePreference();
 		}
 		
 	}
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+            return gesturedetector.onTouchEvent(event);
+    }
 
+	@Override
+	public boolean onDoubleTap(MotionEvent e) {
+		savePreference();
+		return false;
+	}
+	
+	@Override
+	public void finish() {
+		super.finish();
+		overridePendingTransition(R.anim.hold, R.anim.drawer_fade_out);
+	}
+	
+	/* Land of the forgotten classes */
+	
+	public boolean onDoubleTapEvent(MotionEvent e) {return false;}
+	public boolean onSingleTapConfirmed(MotionEvent e) {return false;}
+	public boolean onDown(MotionEvent e) {return false;}
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {return false;}
+	public void onLongPress(MotionEvent e) {}
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {return false;}
+	public void onShowPress(MotionEvent e) {}
+	public boolean onSingleTapUp(MotionEvent e) {return false;}
     
 }
