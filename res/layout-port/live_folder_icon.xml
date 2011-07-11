@@ -17,5 +17,5 @@
  */
 -->
 
-<com.evervolv.creo2.LiveFolderIcon xmlns:android="http://schemas.android.com/apk/res/android"
+<com.evervolv.creo.LiveFolderIcon xmlns:android="http://schemas.android.com/apk/res/android"
  	style="@style/WorkspaceIcon.Portrait" />

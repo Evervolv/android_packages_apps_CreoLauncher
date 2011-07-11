@@ -119,7 +119,7 @@ public class DockPanel extends LinearLayout {
 
 		// Try to load values set by xml markup
 		if (attrs != null) {
-			String namespace = "http://com.android.launcher2";
+			String namespace = "http://com.evervolv.creo";
 
 			animationDuration = attrs.getAttributeIntValue(namespace,
 					"animationDuration", 500);

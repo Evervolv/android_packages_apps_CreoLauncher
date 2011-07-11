@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 
-<com.evervolv.creo2.CellLayout
+<com.evervolv.creo.CellLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res/com.evervolv.creo"
 

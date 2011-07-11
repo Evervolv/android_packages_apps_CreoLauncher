@@ -14,5 +14,5 @@
      limitations under the License.
 -->
 
-<com.evervolv.creo2.FolderIcon xmlns:android="http://schemas.android.com/apk/res/android"
+<com.evervolv.creo.FolderIcon xmlns:android="http://schemas.android.com/apk/res/android"
  	style="@style/WorkspaceIcon.Landscape" />

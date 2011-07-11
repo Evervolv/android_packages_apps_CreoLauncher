@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 
-<com.evervolv.creo2.UserFolder xmlns:android="http://schemas.android.com/apk/res/android"
+<com.evervolv.creo.UserFolder xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
         
     <Button
@@ -48,4 +48,4 @@
              android:numColumns="4" />
     </FrameLayout>
 
-</com.evervolv.creo2.UserFolder>
+</com.evervolv.creo.UserFolder>

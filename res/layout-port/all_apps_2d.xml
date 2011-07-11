@@ -15,7 +15,7 @@
 -->
 
 <!-- Sapphire gets 2D all apps view -->
-<com.evervolv.creo2.AllApps2D
+<com.evervolv.creo.AllApps2D
     xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:id="@+id/all_apps_view"
@@ -45,7 +45,7 @@
         />
 
     <view
-        class="com.evervolv.creo2.AllApps2D$HomeButton"
+        class="com.evervolv.creo.AllApps2D$HomeButton"
         android:id="@+id/all_apps_2d_home"
         android:tag="all_apps_2d_home"
         android:src="@drawable/home_button"
@@ -60,4 +60,4 @@
         android:nextFocusRight="@null"
         />
 
-</com.evervolv.creo2.AllApps2D>
+</com.evervolv.creo.AllApps2D>

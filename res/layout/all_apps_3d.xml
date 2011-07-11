@@ -15,7 +15,7 @@
 -->
 
 <!-- Replace with AllAppsView to use 2D version -->
-<com.evervolv.creo2.AllApps3D
+<com.evervolv.creo.AllApps3D
     xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:id="@+id/all_apps_view"

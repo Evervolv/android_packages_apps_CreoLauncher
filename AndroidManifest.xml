@@ -61,9 +61,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.BIND_APPWIDGET" />
+<!--
     <uses-permission android:name="com.evervolv.creo.permission.READ_SETTINGS" />
     <uses-permission android:name="com.evervolv.creo.permission.WRITE_SETTINGS" />
-    
+-->
     <application
         android:name="com.evervolv.creo.LauncherApplication"
         android:process="@string/process"

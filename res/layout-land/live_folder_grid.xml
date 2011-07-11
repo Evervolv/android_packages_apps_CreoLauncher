@@ -17,7 +17,7 @@
  */
 -->
 
-<com.evervolv.creo2.LiveFolder xmlns:android="http://schemas.android.com/apk/res/android"
+<com.evervolv.creo.LiveFolder xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
     
     <Button
@@ -52,4 +52,4 @@
              android:numColumns="5" />
     </FrameLayout>
 
-</com.evervolv.creo2.LiveFolder>
+</com.evervolv.creo.LiveFolder>

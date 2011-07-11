@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 
-<com.evervolv.creo2.DragLayer
+<com.evervolv.creo.DragLayer
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res/com.evervolv.creo"
 
@@ -25,7 +25,7 @@
     <include layout="@layout/all_apps" />
 
     <!-- The workspace contains 3 screens of cells -->
-    <com.evervolv.creo2.Workspace
+    <com.evervolv.creo.Workspace
         android:id="@+id/workspace"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,7 +37,7 @@
         <include android:id="@+id/cell4" layout="@layout/workspace_screen" />
         <include android:id="@+id/cell5" layout="@layout/workspace_screen" />
                 
-    </com.evervolv.creo2.Workspace>
+    </com.evervolv.creo.Workspace>
 
     <ImageView
         android:id="@+id/previous_screen"
@@ -69,7 +69,7 @@
         android:focusable="true"
         android:clickable="true" />
 
-    <com.evervolv.creo2.DeleteZone
+    <com.evervolv.creo.DeleteZone
         android:id="@+id/delete_zone"
         android:layout_width="@dimen/delete_zone_size"
         android:layout_height="@dimen/delete_zone_size"
@@ -90,7 +90,7 @@
         android:paddingTop="2dip"
         >
 
-        <com.evervolv.creo2.HandleView
+        <com.evervolv.creo.HandleView
             style="@style/HotseatButton"
             android:id="@+id/all_apps_button"
             android:layout_centerHorizontal="true"
@@ -122,4 +122,4 @@
 
     </RelativeLayout>
 
-</com.evervolv.creo2.DragLayer>
+</com.evervolv.creo.DragLayer>

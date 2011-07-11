@@ -67,7 +67,7 @@ public class LauncherProvider extends ContentProvider {
     
     private static final int DATABASE_VERSION = 8;
 
-    static final String AUTHORITY = "com.android.launcher2.settings";
+    static final String AUTHORITY = "com.evervolv.creo.settings";
     
     static final String TABLE_FAVORITES = "favorites";
     static final String PARAMETER_NOTIFY = "notify";
