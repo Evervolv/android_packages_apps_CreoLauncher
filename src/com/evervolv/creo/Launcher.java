@@ -132,8 +132,8 @@ public final class Launcher extends Activity
     
     protected static final int LAUNCHER_STYLE_STOCK = 0;
     protected static final int LAUNCHER_STYLE_EVERVOLV = 1;
-    protected static final int LAUNCHER_STYLE_TABLET = 2;
-    protected static final int LAUNCHER_STYLE_FROYO = 3;
+    protected static final int LAUNCHER_STYLE_FROYO = 2;
+    protected static final int LAUNCHER_STYLE_TABLET = 3;
     
     static final String EXTRA_SHORTCUT_DUPLICATE = "duplicate";
 
@@ -292,14 +292,14 @@ public final class Launcher extends Activity
 	        	setContentView(R.layout.launcher_ev);
 	        	NUM_HOTSEATS = 4;
 	            break;
+	        case LAUNCHER_STYLE_FROYO:
+	        	setContentView(R.layout.launcher_froyo);
+	        	NUM_HOTSEATS = 2;
+	            break;
 	        case LAUNCHER_STYLE_TABLET:
 	        	setContentView(R.layout.launcher_tab);
 	        	NUM_HOTSEATS = 4;
 	        	break;
-	        case LAUNCHER_STYLE_FROYO:
-	        	setContentView(R.layout.launcher);
-	        	NUM_HOTSEATS = 2;
-	            break;
         }
         
         loadHotseats();
@@ -710,7 +710,7 @@ public final class Launcher extends Activity
     protected void onPause() {
         super.onPause();
         mPaused = true;
-        if (mLauncherStyle == LAUNCHER_STYLE_STOCK){
+        if (mLauncherStyle == LAUNCHER_STYLE_STOCK || mLauncherStyle == LAUNCHER_STYLE_FROYO){
             dismissPreview(mPreviousView);
             dismissPreview(mNextView);  	
         }
@@ -804,7 +804,7 @@ public final class Launcher extends Activity
         }
 
         final int currentScreen = savedState.getInt(RUNTIME_STATE_CURRENT_SCREEN, -1);
-        if (mLauncherStyle == LAUNCHER_STYLE_STOCK){
+        if (mLauncherStyle == LAUNCHER_STYLE_STOCK || mLauncherStyle == LAUNCHER_STYLE_FROYO){
             if (currentScreen > -1) {
                 mWorkspace.setCurrentScreen(currentScreen);
             }
@@ -880,7 +880,7 @@ public final class Launcher extends Activity
         ImageView hotseatLeft = (ImageView) findViewById(R.id.hotseat_left);
         ImageView hotseatRight = (ImageView) findViewById(R.id.hotseat_right);
 
-        if (mLauncherStyle != LAUNCHER_STYLE_STOCK) {       
+        if (mLauncherStyle == LAUNCHER_STYLE_EVERVOLV || mLauncherStyle == LAUNCHER_STYLE_TABLET) {       
         	
             hotseatLeft.setContentDescription(mHotseatLabels[0]);
             hotseatLeft.setImageDrawable(mHotseatIcons[0]);
@@ -1227,7 +1227,7 @@ public final class Launcher extends Activity
         unbindDesktopItems();
 
         getContentResolver().unregisterContentObserver(mWidgetObserver);
-        if (mLauncherStyle == LAUNCHER_STYLE_STOCK){
+        if (mLauncherStyle == LAUNCHER_STYLE_STOCK || mLauncherStyle == LAUNCHER_STYLE_FROYO){
             dismissPreview(mPreviousView);
             dismissPreview(mNextView);	
         }
@@ -1582,7 +1582,7 @@ public final class Launcher extends Activity
         } else {
             closeFolder();
         }
-        if (mLauncherStyle == LAUNCHER_STYLE_STOCK){
+        if (mLauncherStyle == LAUNCHER_STYLE_STOCK || mLauncherStyle == LAUNCHER_STYLE_FROYO){
             dismissPreview(mPreviousView);
             dismissPreview(mNextView);   	
         }

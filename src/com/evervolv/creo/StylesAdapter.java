@@ -38,8 +38,8 @@ public class StylesAdapter extends BaseAdapter {
     private Integer[] getImageIds() {
     	return new Integer[] {
                 R.drawable.style_gingerbread,
-                //R.drawable.style_froyo,
-                R.drawable.style_evervolv
+                R.drawable.style_evervolv,
+                R.drawable.style_froyo
                 //R.drawable.style_tablet,
         };
     }
@@ -47,8 +47,8 @@ public class StylesAdapter extends BaseAdapter {
 	private Integer[] getTitleIds() {
 		return new Integer[] {
             R.string.style_gingerbread,
-            //R.string.style_froyo,
-            R.string.style_evervolv
+            R.string.style_evervolv,
+            R.string.style_froyo
             //R.string.style_tablet
 		};
 	}

@@ -328,7 +328,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
         clearVacantCache();
         mCurrentScreen = Math.max(0, Math.min(currentScreen, getChildCount() - 1));
         
-        if (mLauncher.mLauncherStyle == Launcher.LAUNCHER_STYLE_STOCK){
+        if (mLauncher.mLauncherStyle == Launcher.LAUNCHER_STYLE_STOCK || mLauncher.mLauncherStyle == Launcher.LAUNCHER_STYLE_FROYO){
             mPreviousIndicator.setLevel(mCurrentScreen);
             mNextIndicator.setLevel(mCurrentScreen);
         }
@@ -483,7 +483,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
         } else if (mNextScreen != INVALID_SCREEN) {
             mCurrentScreen = Math.max(0, Math.min(mNextScreen, getChildCount() - 1));
             
-            if (mLauncher.mLauncherStyle == Launcher.LAUNCHER_STYLE_STOCK){
+            if (mLauncher.mLauncherStyle == Launcher.LAUNCHER_STYLE_STOCK || mLauncher.mLauncherStyle == Launcher.LAUNCHER_STYLE_FROYO){
                 mPreviousIndicator.setLevel(mCurrentScreen);
                 mNextIndicator.setLevel(mCurrentScreen);         	
             }
@@ -1084,7 +1084,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
 
         mNextScreen = whichScreen;
 
-        if (mLauncher.mLauncherStyle == Launcher.LAUNCHER_STYLE_STOCK) {
+        if (mLauncher.mLauncherStyle == Launcher.LAUNCHER_STYLE_STOCK || mLauncher.mLauncherStyle == Launcher.LAUNCHER_STYLE_FROYO) {
             mPreviousIndicator.setLevel(mNextScreen);
             mNextIndicator.setLevel(mNextScreen);
         }
