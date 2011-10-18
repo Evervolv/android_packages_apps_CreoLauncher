@@ -285,20 +285,21 @@ void drawFrontGrid(float rowOffset, float p)
 
     int intRowOffset = rowOffset;
     float rowFrac = rowOffset - intRowOffset;
-    float colWidth = 120.f;//getWidth() / 4;
-    float rowHeight = colWidth + 25.f;
-    float yoff = 0.5f * h + 1.5f * rowHeight;
-
-    int row, col;
     int colCount = 4;
-    if (w > h) {
+    float colWidth = w / colCount;
+    float rowHeight = colWidth;
+    float yoff;
+    if (h > w) {
+        rowHeight += 25.f;
+        yoff = 0.5f * h + 1.5f * rowHeight;
+    } else {
         colCount = 6;
-        rowHeight -= 12.f;
+        colWidth = w / (colCount+1);
+        rowHeight = colWidth + 13.f;
         yoff = 0.47f * h + 1.0f * rowHeight;
     }
-
+    int row, col;
     int iconNum = (intRowOffset - 5) * colCount;
-
 
     bindProgramVertex(NAMED_PVCurve);
 
@@ -334,7 +335,7 @@ void drawFrontGrid(float rowOffset, float p)
                 drawSimpleMesh(NAMED_SMCell);
 
                 bindProgramFragment(NAMED_PFTexMipAlpha);
-                vpConstants->ImgSize.x = 120.f;
+                vpConstants->ImgSize.x = colWidth;
                 vpConstants->ImgSize.y = 64.f;
                 vpConstants->Position.y = y - 64.f - 0.2f;
                 bindTexture(NAMED_PFTexMipAlpha, 0, loadI32(ALLOC_LABEL_IDS, iconNum));

@@ -22,17 +22,24 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import dalvik.system.VMRuntime;
 
 public class LauncherApplication extends Application {
     public LauncherModel mModel;
     public IconCache mIconCache;
 
+    private static float sColWidth;
+
     @Override
     public void onCreate() {
         VMRuntime.getRuntime().setMinimumHeapSize(4 * 1024 * 1024);
 
         super.onCreate();
+
+        final DisplayMetrics metrics = getResources().getDisplayMetrics();
+        final boolean isPortrait = metrics.widthPixels < metrics.heightPixels;
+        sColWidth = isPortrait ? metrics.widthPixels / AllApps3D.Defines.COLUMNS_PER_PAGE_PORTRAIT : metrics.heightPixels / AllApps3D.Defines.COLUMNS_PER_PAGE_PORTRAIT;
 
         mIconCache = new IconCache(this);
         mModel = new LauncherModel(this, mIconCache);
@@ -76,6 +83,10 @@ public class LauncherApplication extends Application {
             mModel.startLoader(LauncherApplication.this, false);
         }
     };
+
+    static float getColWidth() {
+        return sColWidth;
+    }
 
     LauncherModel setLauncher(Launcher launcher) {
         mModel.initialize(launcher);

@@ -278,7 +278,7 @@ final class Utilities {
 
             final float paddingLeft = 2.0f * scale;
             final float paddingRight = 2.0f * scale;
-            final float cellWidth = resources.getDimension(R.dimen.title_texture_width);
+            final float cellWidth = LauncherApplication.getColWidth();
 
             RectF bubbleRect = mBubbleRect;
             bubbleRect.left = 0;

@@ -131,6 +131,11 @@ public class AllApps3D extends RSSurfaceView
     private boolean mSurrendered;
 
     private int mRestoreFocusIndex = -1;
+
+    private float mColumnWidth;
+    private float mWidth;
+    private float mRolloContentHeight;
+    private float mRolloYoff;
     
     @SuppressWarnings({"UnusedDeclaration"})
     static class Defines {
@@ -163,7 +168,6 @@ public class AllApps3D extends RSSurfaceView
         final ViewConfiguration config = ViewConfiguration.get(context);
         mSlop = config.getScaledTouchSlop();
         mMaxFlingVelocity = config.getScaledMaximumFlingVelocity();
-
         setOnClickListener(this);
         setOnLongClickListener(this);
         setZOrderOnTop(true);
@@ -177,11 +181,21 @@ public class AllApps3D extends RSSurfaceView
 
         final DisplayMetrics metrics = getResources().getDisplayMetrics();
         final boolean isPortrait = metrics.widthPixels < metrics.heightPixels;
-        mColumnsPerPage = isPortrait ? Defines.COLUMNS_PER_PAGE_PORTRAIT :
-                Defines.COLUMNS_PER_PAGE_LANDSCAPE;
-        mRowsPerPage = isPortrait ? Defines.ROWS_PER_PAGE_PORTRAIT :
-                Defines.ROWS_PER_PAGE_LANDSCAPE;
-
+        if (isPortrait) {
+            mWidth = metrics.widthPixels;
+            mColumnWidth = mWidth / Defines.COLUMNS_PER_PAGE_PORTRAIT;
+            mRolloContentHeight = metrics.heightPixels * .85f;
+            mRolloYoff = metrics.heightPixels * 0.474f;
+            mColumnsPerPage = Defines.COLUMNS_PER_PAGE_PORTRAIT;
+            mRowsPerPage = Defines.ROWS_PER_PAGE_PORTRAIT;
+        } else {
+            mWidth = metrics.heightPixels;
+            mColumnWidth = metrics.widthPixels / (Defines.COLUMNS_PER_PAGE_LANDSCAPE+1.0f);
+            mRolloContentHeight = metrics.widthPixels * .85f;
+            mRolloYoff = metrics.widthPixels * 0.474f;
+            mColumnsPerPage = Defines.COLUMNS_PER_PAGE_LANDSCAPE;
+            mRowsPerPage = Defines.ROWS_PER_PAGE_LANDSCAPE;
+        }
         if (sRollo != null) {
             sRollo.mAllApps = this;
             sRollo.mRes = getResources();
@@ -280,9 +294,9 @@ public class AllApps3D extends RSSurfaceView
 
         if (sRollo.mUniformAlloc != null) {
             float tf[] = new float[] {72.f, 72.f,
-                                      120.f, 120.f, 0.f, 0.f,
-                                      120.f, 680.f,
-                                      (2.f / 480.f), 0, -((float)w / 2) - 0.25f, -380.25f};
+                                      mColumnWidth, mColumnWidth, 0.f, 0.f,
+                                      mColumnWidth, mRolloContentHeight,
+                                      (2.f / mWidth), 0, -((float)w / 2) - 0.25f, -mRolloYoff};
             if (w > h) {
                 tf[6] = 40.f;
                 tf[7] = h - 40.f;
@@ -526,9 +540,8 @@ public class AllApps3D extends RSSurfaceView
         mTouchXBorders = new int[mColumnsPerPage + 1];
         mTouchYBorders = new int[mRowsPerPage + 1];
 
-        // TODO: Put this in a config file/define
-        int cellHeight = 145;//iconsSize / Defines.ROWS_PER_PAGE_PORTRAIT;
-        if (!isPortrait) cellHeight -= 12;
+        int cellHeight = Math.round(mColumnWidth);//iconsSize / Defines.ROWS_PER_PAGE_PORTRAIT;
+        cellHeight = isPortrait ? cellHeight+25 : cellHeight+13;
         int centerY = (int) (height * (isPortrait ? 0.5f : 0.47f));
         if (!isPortrait) centerY += cellHeight / 2;
         int half = (int) Math.floor((mRowsPerPage + 1) / 2);
@@ -539,8 +552,7 @@ public class AllApps3D extends RSSurfaceView
         }
 
         int x = 0;
-        // TODO: Put this in a config file/define
-        int columnWidth = 120;
+        int columnWidth = Math.round(mColumnWidth);
         for (int i = 0; i < mColumnsPerPage + 1; i++) {
             mTouchXBorders[i] = x - viewPos[0];
             x += columnWidth;
@@ -1027,7 +1039,7 @@ public class AllApps3D extends RSSurfaceView
         private Bitmap mSelectionBitmap;
         private Canvas mSelectionCanvas;
         
-        private float mScrollPos;        
+        private float mScrollPos;
 
         Params mParams;
         State mState;
